@@ -81,8 +81,7 @@ describe("EpicTools", () => {
 			const mockServer = { tool: mockTool } as unknown as McpServer;
 
 			EpicTools.create(mockClient, mockServer);
-
-			expect(mockTool).toHaveBeenCalledTimes(2);
+			expect(mockTool).toHaveBeenCalledTimes(6);
 
 			expect(mockTool.mock.calls?.[0]?.[0]).toBe("get-epic");
 			expect(mockTool.mock.calls?.[1]?.[0]).toBe("search-epics");

@@ -6,6 +6,7 @@ import type {
 	UpdateStory,
 	Workflow,
 } from "@shortcut/client";
+// import { RequestParams } from "./http-client";
 import { Cache } from "./cache";
 
 export class ShortcutClientWrapper {
@@ -152,6 +153,50 @@ export class ShortcutClientWrapper {
 		return epic;
 	}
 
+	async createEpic(params: {
+		name: string;
+		description?: string;
+		summary?: string;
+		team_name?: string;
+		started_at_override?: string;
+		deadline?: string;
+	}) {
+		const response = await this.client.createEpic(params);
+		const epic = response?.data ?? null;
+
+		if (!epic) return null;
+
+		return epic;
+	}
+
+	async updateEpic(
+		epicPublicId: number,
+		params: {
+			group_id?: string;
+			name?: string;
+			description?: string;
+			state?: "to do" | "in progress" | "done";
+			started_at_override?: string;
+			deadline?: string;
+		},
+	) {
+		const response = await this.client.updateEpic(epicPublicId, params);
+		const epic = response?.data ?? null;
+
+		if (!epic) return null;
+
+		return epic;
+	}
+
+	async deleteEpic(epicPublicId: number) {
+		const response = await this.client.deleteEpic(epicPublicId);
+		const epic = response?.data ?? null;
+
+		if (!epic) return null;
+
+		return epic;
+	}
+
 	async getIteration(iterationPublicId: number) {
 		const response = await this.client.getIteration(iterationPublicId);
 		const iteration = response?.data ?? null;
@@ -198,6 +243,15 @@ export class ShortcutClientWrapper {
 		if (!epics) return { epics: null, total: null };
 
 		return { epics, total };
+	}
+
+	async listEpics() {
+		const response = await this.client.listEpics({});
+		const epics = response?.data ?? null;
+
+		if (!epics) return { epics: null, total: 0 };
+
+		return { epics, total: epics.length };
 	}
 
 	async searchMilestones(query: string) {
